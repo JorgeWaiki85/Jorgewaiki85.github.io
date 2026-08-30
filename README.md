@@ -418,32 +418,15 @@
         </div>
 
         <div class="form-section">
-            <h2>DATOS DE LA VICTIMA</h2>
-            <div class="form-row">
-                <div class="form-group">
-                    <label>NOMBRE:</label>
-                    <input type="text" id="del-victima-nombre">
-                </div>
-                <div class="form-group">
-                    <label>RUN:</label>
-                    <input type="text" id="del-victima-run">
-                </div>
+            <div class="checkbox-section">
+                <label>
+                    <input type="checkbox" id="del-victima-check" onchange="toggleVictimas()">
+                    DATOS DE LA(S) VICTIMA(S)
+                </label>
             </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label>DOMICILIO:</label>
-                    <input type="text" id="del-victima-domicilio">
-                </div>
-                <div class="form-group">
-                    <label>FONO:</label>
-                    <input type="tel" id="del-victima-fono">
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label>CORREO:</label>
-                    <input type="email" id="del-victima-correo">
-                </div>
+            <div id="del-victimas-container" class="hidden">
+                <div id="del-victimas-list"></div>
+                <button class="add-btn" onclick="addVictima()">+ AGREGAR OTRA VICTIMA</button>
             </div>
         </div>
 
@@ -458,6 +441,13 @@
             <h2>AVALUO</h2>
             <div class="form-group">
                 <textarea id="del-avaluo"></textarea>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h2>DAÑOS</h2>
+            <div class="form-group">
+                <textarea id="del-danos"></textarea>
             </div>
         </div>
 
@@ -648,6 +638,7 @@
         let detenidoCount = 0;
         let lesionadoCount = 0;
         let vehiculoCount = 0;
+        let victimaCount = 0;
 
         function openTab(tabName) {
             document.querySelectorAll('.tab-content').forEach(tab => {
@@ -658,6 +649,61 @@
             });
             document.getElementById(tabName).classList.add('active');
             event.target.classList.add('active');
+        }
+
+        function toggleVictimas() {
+            const container = document.getElementById('del-victimas-container');
+            const checkbox = document.getElementById('del-victima-check');
+            if (checkbox.checked) {
+                container.classList.remove('hidden');
+                if (victimaCount === 0) addVictima();
+            } else {
+                container.classList.add('hidden');
+            }
+        }
+
+        function addVictima() {
+            victimaCount++;
+            const list = document.getElementById('del-victimas-list');
+            const div = document.createElement('div');
+            div.className = 'dynamic-item';
+            div.id = `victima-${victimaCount}`;
+            div.innerHTML = `
+                <button class="remove-btn" onclick="removeVictima(${victimaCount})">×</button>
+                <h4>VICTIMA ${victimaCount}</h4>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>NOMBRE:</label>
+                        <input type="text" id="del-victima-nombre-${victimaCount}">
+                    </div>
+                    <div class="form-group">
+                        <label>RUN:</label>
+                        <input type="text" id="del-victima-run-${victimaCount}">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>DOMICILIO:</label>
+                        <input type="text" id="del-victima-domicilio-${victimaCount}">
+                    </div>
+                    <div class="form-group">
+                        <label>FONO:</label>
+                        <input type="tel" id="del-victima-fono-${victimaCount}">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>CORREO:</label>
+                        <input type="email" id="del-victima-correo-${victimaCount}">
+                    </div>
+                </div>
+            `;
+            list.appendChild(div);
+        }
+
+        function removeVictima(id) {
+            const item = document.getElementById(`victima-${id}`);
+            if (item) item.remove();
         }
 
         function toggleDetenidos() {
@@ -921,14 +967,9 @@
                 const cuadrante = getValue('del-cuadrante');
                 const funcionarios = getValue('del-funcionarios');
 
-                const vn = getValue('del-victima-nombre');
-                const vr = getValue('del-victima-run');
-                const vd = getValue('del-victima-domicilio');
-                const vf = getValue('del-victima-fono');
-                const vc = getValue('del-victima-correo');
-
                 const especies = getValue('del-especies');
                 const avaluo = getValue('del-avaluo');
+                const danos = getValue('del-danos');
 
                 const vp = getValue('del-vehiculo-ppu');
                 const vm = getValue('del-vehiculo-marca');
@@ -954,18 +995,33 @@
                     message += '\n';
                 }
 
-                if (vn || vr || vd || vf || vc) {
-                    message += `*DATOS DE LA VICTIMA:*\n`;
-                    if (vn) message += `*NOMBRE:* ${vn}\n`;
-                    if (vr) message += `*RUN:* ${vr}\n`;
-                    if (vd) message += `*DOMICILIO:* ${vd}\n`;
-                    if (vf) message += `*FONO:* ${vf}\n`;
-                    if (vc) message += `*CORREO:* ${vc}\n`;
-                    message += '\n';
+                if (document.getElementById('del-victima-check').checked) {
+                    const items = document.querySelectorAll('#del-victimas-list .dynamic-item');
+                    if (items.length > 0) {
+                        message += `*DATOS DE LA(S) VICTIMA(S):*\n`;
+                        items.forEach((item, index) => {
+                            const num = index + 1;
+                            const nombre = getValue(`del-victima-nombre-${num}`);
+                            const run = getValue(`del-victima-run-${num}`);
+                            const domicilio = getValue(`del-victima-domicilio-${num}`);
+                            const fono = getValue(`del-victima-fono-${num}`);
+                            const correo = getValue(`del-victima-correo-${num}`);
+                            if (nombre || run || domicilio || fono || correo) {
+                                message += `\n*VICTIMA ${num}:*\n`;
+                                if (nombre) message += `*NOMBRE:* ${nombre}\n`;
+                                if (run) message += `*RUN:* ${run}\n`;
+                                if (domicilio) message += `*DOMICILIO:* ${domicilio}\n`;
+                                if (fono) message += `*FONO:* ${fono}\n`;
+                                if (correo) message += `*CORREO:* ${correo}\n`;
+                            }
+                        });
+                        message += '\n';
+                    }
                 }
 
                 if (especies) message += `*ESPECIES SUSTRAIDAS:*\n${especies}\n\n`;
                 if (avaluo) message += `*AVALUO:*\n${avaluo}\n\n`;
+                if (danos) message += `*DAÑOS:*\n${danos}\n\n`;
 
                 if (vp || vm || vmol || vco) {
                     message += `*DATOS DEL VEHICULO:*\n`;
@@ -1140,14 +1196,14 @@
                 document.getElementById('del-cuadrante').value = '';
                 document.getElementById('del-funcionarios').value = '';
 
-                document.getElementById('del-victima-nombre').value = '';
-                document.getElementById('del-victima-run').value = '';
-                document.getElementById('del-victima-domicilio').value = '';
-                document.getElementById('del-victima-fono').value = '';
-                document.getElementById('del-victima-correo').value = '';
+                document.getElementById('del-victima-check').checked = false;
+                document.getElementById('del-victimas-container').classList.add('hidden');
+                document.getElementById('del-victimas-list').innerHTML = '';
+                victimaCount = 0;
 
                 document.getElementById('del-especies').value = '';
                 document.getElementById('del-avaluo').value = '';
+                document.getElementById('del-danos').value = '';
 
                 document.getElementById('del-vehiculo-ppu').value = '';
                 document.getElementById('del-vehiculo-marca').value = '';

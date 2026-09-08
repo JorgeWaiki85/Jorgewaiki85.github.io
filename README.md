@@ -166,6 +166,27 @@
             cursor: pointer;
         }
 
+        .camaras-checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 5px;
+        }
+
+        .camaras-checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: normal;
+            cursor: pointer;
+        }
+
+        .camaras-checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
         .dynamic-section {
             margin-top: 15px;
             padding: 15px;
@@ -415,6 +436,34 @@
                     <input type="text" id="del-funcionarios">
                 </div>
             </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>CÁMARAS:</label>
+                    <div class="camaras-checkbox-group" id="del-camaras-checkbox-group">
+                        <label><input type="checkbox" name="del-camaras-tipo" value="MUNICIPALES" onchange="delCamarasTipoChanged()"> MUNICIPALES</label>
+                        <label><input type="checkbox" name="del-camaras-tipo" value="PARTICULARES" onchange="delCamarasTipoChanged()"> PARTICULARES</label>
+                        <label><input type="checkbox" name="del-camaras-tipo" value="CORPORALES" onchange="delCamarasTipoChanged()"> CORPORALES</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row hidden" id="del-camaras-municipales-row">
+                <div class="form-group">
+                    <label>CÁMARAS MUNICIPALES (describir):</label>
+                    <textarea id="del-camaras-municipales"></textarea>
+                </div>
+            </div>
+            <div class="form-row hidden" id="del-camaras-particulares-row">
+                <div class="form-group">
+                    <label>CÁMARAS PARTICULARES (describir):</label>
+                    <textarea id="del-camaras-particulares"></textarea>
+                </div>
+            </div>
+            <div class="form-row hidden" id="del-camaras-corporales-row">
+                <div class="form-group">
+                    <label>CÁMARAS CORPORALES (seleccionar):</label>
+                    <div class="camaras-checkbox-group" id="del-camaras-corporales-list"></div>
+                </div>
+            </div>
         </div>
 
         <div class="form-section">
@@ -427,6 +476,19 @@
             <div id="del-victimas-container" class="hidden">
                 <div id="del-victimas-list"></div>
                 <button class="add-btn" onclick="addVictima()">+ AGREGAR OTRA VICTIMA</button>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <div class="checkbox-section">
+                <label>
+                    <input type="checkbox" id="del-vehiculo-check" onchange="toggleDelVehiculos()">
+                    DATOS DEL/LOS VEHICULO(S)
+                </label>
+            </div>
+            <div id="del-vehiculos-container" class="hidden">
+                <div id="del-vehiculos-list"></div>
+                <button class="add-btn" onclick="addDelVehiculo()">+ AGREGAR OTRO VEHICULO</button>
             </div>
         </div>
 
@@ -452,30 +514,6 @@
         </div>
 
         <div class="form-section">
-            <h2>DATOS DEL VEHICULO</h2>
-            <div class="form-row">
-                <div class="form-group">
-                    <label>PPU:</label>
-                    <input type="text" id="del-vehiculo-ppu">
-                </div>
-                <div class="form-group">
-                    <label>MARCA:</label>
-                    <input type="text" id="del-vehiculo-marca">
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label>MODELO:</label>
-                    <input type="text" id="del-vehiculo-modelo">
-                </div>
-                <div class="form-group">
-                    <label>COLOR:</label>
-                    <input type="text" id="del-vehiculo-color">
-                </div>
-            </div>
-        </div>
-
-        <div class="form-section">
             <div class="checkbox-section">
                 <label>
                     <input type="checkbox" id="del-detenido-check" onchange="toggleDetenidos()">
@@ -485,6 +523,19 @@
             <div id="del-detenidos-container" class="hidden">
                 <div id="del-detenidos-list"></div>
                 <button class="add-btn" onclick="addDetenido()">+ AGREGAR OTRO DETENIDO</button>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <div class="checkbox-section">
+                <label>
+                    <input type="checkbox" id="del-vehiculo2-check" onchange="toggleDelVehiculos2()">
+                    DATOS DEL/LOS VEHICULO(S) SOSPECHOSOS
+                </label>
+            </div>
+            <div id="del-vehiculos2-container" class="hidden">
+                <div id="del-vehiculos2-list"></div>
+                <button class="add-btn" onclick="addDelVehiculo2()">+ AGREGAR OTRO VEHICULO</button>
             </div>
         </div>
 
@@ -555,6 +606,34 @@
                 <div class="form-group">
                     <label>FUNCIONARIOS:</label>
                     <input type="text" id="acc-funcionarios">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>CÁMARAS:</label>
+                    <div class="camaras-checkbox-group" id="acc-camaras-checkbox-group">
+                        <label><input type="checkbox" name="acc-camaras-tipo" value="MUNICIPALES" onchange="accCamarasTipoChanged()"> MUNICIPALES</label>
+                        <label><input type="checkbox" name="acc-camaras-tipo" value="PARTICULARES" onchange="accCamarasTipoChanged()"> PARTICULARES</label>
+                        <label><input type="checkbox" name="acc-camaras-tipo" value="CORPORALES" onchange="accCamarasTipoChanged()"> CORPORALES</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row hidden" id="acc-camaras-municipales-row">
+                <div class="form-group">
+                    <label>CÁMARAS MUNICIPALES (describir):</label>
+                    <textarea id="acc-camaras-municipales"></textarea>
+                </div>
+            </div>
+            <div class="form-row hidden" id="acc-camaras-particulares-row">
+                <div class="form-group">
+                    <label>CÁMARAS PARTICULARES (describir):</label>
+                    <textarea id="acc-camaras-particulares"></textarea>
+                </div>
+            </div>
+            <div class="form-row hidden" id="acc-camaras-corporales-row">
+                <div class="form-group">
+                    <label>CÁMARAS CORPORALES (seleccionar):</label>
+                    <div class="camaras-checkbox-group" id="acc-camaras-corporales-list"></div>
                 </div>
             </div>
         </div>
@@ -639,6 +718,8 @@
         let lesionadoCount = 0;
         let vehiculoCount = 0;
         let victimaCount = 0;
+        let delVehiculoCount = 0;
+        let delVehiculo2Count = 0;
 
         function openTab(tabName) {
             document.querySelectorAll('.tab-content').forEach(tab => {
@@ -697,12 +778,202 @@
                         <input type="email" id="del-victima-correo-${victimaCount}">
                     </div>
                 </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>¿PRESENTA LESIONES?:</label>
+                        <div class="radio-group">
+                            <label>
+                                <input type="radio" name="del-victima-lesiones-${victimaCount}" value="SI" onchange="toggleVictimaLesiones(${victimaCount})"> SI
+                            </label>
+                            <label>
+                                <input type="radio" name="del-victima-lesiones-${victimaCount}" value="NO" onchange="toggleVictimaLesiones(${victimaCount})"> NO
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row hidden" id="del-victima-lesiones-row-${victimaCount}">
+                    <div class="form-group">
+                        <label>LESIONES:</label>
+                        <textarea id="del-victima-lesiones-${victimaCount}"></textarea>
+                    </div>
+                </div>
             `;
             list.appendChild(div);
         }
 
+        function toggleVictimaLesiones(id) {
+            const row = document.getElementById(`del-victima-lesiones-row-${id}`);
+            const siChecked = document.querySelector(`input[name="del-victima-lesiones-${id}"][value="SI"]`).checked;
+            if (siChecked) {
+                row.classList.remove('hidden');
+            } else {
+                row.classList.add('hidden');
+            }
+        }
+
         function removeVictima(id) {
             const item = document.getElementById(`victima-${id}`);
+            if (item) item.remove();
+        }
+
+        function delCamarasTipoChanged() {
+            const municipalesRow = document.getElementById('del-camaras-municipales-row');
+            const particularesRow = document.getElementById('del-camaras-particulares-row');
+            const corporalesRow = document.getElementById('del-camaras-corporales-row');
+            const municipalesCheck = document.querySelector('input[name="del-camaras-tipo"][value="MUNICIPALES"]');
+            const particularesCheck = document.querySelector('input[name="del-camaras-tipo"][value="PARTICULARES"]');
+            const corporalesCheck = document.querySelector('input[name="del-camaras-tipo"][value="CORPORALES"]');
+
+            municipalesRow.classList.toggle('hidden', !municipalesCheck.checked);
+            particularesRow.classList.toggle('hidden', !particularesCheck.checked);
+            corporalesRow.classList.toggle('hidden', !corporalesCheck.checked);
+
+            if (corporalesCheck.checked && document.getElementById('del-camaras-corporales-list').children.length === 0) {
+                const list = document.getElementById('del-camaras-corporales-list');
+                for (let i = 1; i <= 30; i++) {
+                    const label = document.createElement('label');
+                    label.innerHTML = `<input type="checkbox" name="del-camaras-corporal" value="${i}"> ${i}`;
+                    list.appendChild(label);
+                }
+            }
+        }
+
+        function accCamarasTipoChanged() {
+            const municipalesRow = document.getElementById('acc-camaras-municipales-row');
+            const particularesRow = document.getElementById('acc-camaras-particulares-row');
+            const corporalesRow = document.getElementById('acc-camaras-corporales-row');
+            const municipalesCheck = document.querySelector('input[name="acc-camaras-tipo"][value="MUNICIPALES"]');
+            const particularesCheck = document.querySelector('input[name="acc-camaras-tipo"][value="PARTICULARES"]');
+            const corporalesCheck = document.querySelector('input[name="acc-camaras-tipo"][value="CORPORALES"]');
+
+            municipalesRow.classList.toggle('hidden', !municipalesCheck.checked);
+            particularesRow.classList.toggle('hidden', !particularesCheck.checked);
+            corporalesRow.classList.toggle('hidden', !corporalesCheck.checked);
+
+            if (corporalesCheck.checked && document.getElementById('acc-camaras-corporales-list').children.length === 0) {
+                const list = document.getElementById('acc-camaras-corporales-list');
+                for (let i = 1; i <= 30; i++) {
+                    const label = document.createElement('label');
+                    label.innerHTML = `<input type="checkbox" name="acc-camaras-corporal" value="${i}"> ${i}`;
+                    list.appendChild(label);
+                }
+            }
+        }
+
+        function toggleDelVehiculos() {
+            const container = document.getElementById('del-vehiculos-container');
+            const checkbox = document.getElementById('del-vehiculo-check');
+            if (checkbox.checked) {
+                container.classList.remove('hidden');
+                if (delVehiculoCount === 0) addDelVehiculo();
+            } else {
+                container.classList.add('hidden');
+            }
+        }
+
+        function addDelVehiculo() {
+            delVehiculoCount++;
+            const list = document.getElementById('del-vehiculos-list');
+            const div = document.createElement('div');
+            div.className = 'dynamic-item';
+            div.id = `del-vehiculo-${delVehiculoCount}`;
+            div.innerHTML = `
+                <button class="remove-btn" onclick="removeDelVehiculo(${delVehiculoCount})">×</button>
+                <h4>VEHICULO ${delVehiculoCount}</h4>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>PPU:</label>
+                        <input type="text" id="del-vehiculo-ppu-${delVehiculoCount}">
+                    </div>
+                    <div class="form-group">
+                        <label>MARCA:</label>
+                        <input type="text" id="del-vehiculo-marca-${delVehiculoCount}">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>MODELO:</label>
+                        <input type="text" id="del-vehiculo-modelo-${delVehiculoCount}">
+                    </div>
+                    <div class="form-group">
+                        <label>COLOR:</label>
+                        <input type="text" id="del-vehiculo-color-${delVehiculoCount}">
+                    </div>
+                </div>
+            `;
+            list.appendChild(div);
+        }
+
+        function removeDelVehiculo(id) {
+            const item = document.getElementById(`del-vehiculo-${id}`);
+            if (item) item.remove();
+        }
+
+        function toggleDelVehiculos2() {
+            const container = document.getElementById('del-vehiculos2-container');
+            const checkbox = document.getElementById('del-vehiculo2-check');
+            if (checkbox.checked) {
+                container.classList.remove('hidden');
+                if (delVehiculo2Count === 0) addDelVehiculo2();
+            } else {
+                container.classList.add('hidden');
+            }
+        }
+
+        function addDelVehiculo2() {
+            delVehiculo2Count++;
+            const list = document.getElementById('del-vehiculos2-list');
+            const div = document.createElement('div');
+            div.className = 'dynamic-item';
+            div.id = `del-vehiculo2-${delVehiculo2Count}`;
+            div.innerHTML = `
+                <button class="remove-btn" onclick="removeDelVehiculo2(${delVehiculo2Count})">×</button>
+                <h4>VEHICULO ${delVehiculo2Count}</h4>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>ESTADO DEL VEHICULO:</label>
+                        <div class="radio-group">
+                            <label>
+                                <input type="radio" name="del-vehiculo2-estado-${delVehiculo2Count}" value="DETENIDO"> DETENIDO
+                            </label>
+                            <label>
+                                <input type="radio" name="del-vehiculo2-estado-${delVehiculo2Count}" value="SOSPECHOSO"> SOSPECHOSO
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>PPU:</label>
+                        <input type="text" id="del-vehiculo2-ppu-${delVehiculo2Count}">
+                    </div>
+                    <div class="form-group">
+                        <label>MARCA:</label>
+                        <input type="text" id="del-vehiculo2-marca-${delVehiculo2Count}">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>MODELO:</label>
+                        <input type="text" id="del-vehiculo2-modelo-${delVehiculo2Count}">
+                    </div>
+                    <div class="form-group">
+                        <label>COLOR:</label>
+                        <input type="text" id="del-vehiculo2-color-${delVehiculo2Count}">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>OBSERVACIONES:</label>
+                        <textarea id="del-vehiculo2-observaciones-${delVehiculo2Count}"></textarea>
+                    </div>
+                </div>
+            `;
+            list.appendChild(div);
+        }
+
+        function removeDelVehiculo2(id) {
+            const item = document.getElementById(`del-vehiculo2-${id}`);
             if (item) item.remove();
         }
 
@@ -797,42 +1068,95 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group">
+                        <label>¿REGISTRO DE SIGNOS VITALES?:</label>
+                        <div class="radio-group">
+                            <label>
+                                <input type="radio" name="acc-les-signos-${lesionadoCount}" value="SI" onchange="toggleAccLesionadoSignos(${lesionadoCount})"> SI
+                            </label>
+                            <label>
+                                <input type="radio" name="acc-les-signos-${lesionadoCount}" value="NO" onchange="toggleAccLesionadoSignos(${lesionadoCount})"> NO
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="hidden" id="acc-les-signos-container-${lesionadoCount}">
+                    <div id="acc-les-signos-list-${lesionadoCount}"></div>
+                    <button class="add-btn" onclick="addAccSignoVital(${lesionadoCount})">+ AGREGAR TOMA DE SIGNOS VITALES</button>
+                </div>
+            `;
+            list.appendChild(div);
+        }
+
+        function toggleAccLesionadoSignos(lesionadoId) {
+            const container = document.getElementById(`acc-les-signos-container-${lesionadoId}`);
+            const siChecked = document.querySelector(`input[name="acc-les-signos-${lesionadoId}"][value="SI"]`).checked;
+            if (siChecked) {
+                container.classList.remove('hidden');
+                addAccSignoVital(lesionadoId);
+            } else {
+                container.classList.add('hidden');
+                document.getElementById(`acc-les-signos-list-${lesionadoId}`).innerHTML = '';
+            }
+        }
+
+        function addAccSignoVital(lesionadoId) {
+            const list = document.getElementById(`acc-les-signos-list-${lesionadoId}`);
+            const count = list.children.length + 1;
+            const div = document.createElement('div');
+            div.className = 'dynamic-item';
+            div.id = `acc-signo-${lesionadoId}-${count}`;
+            div.innerHTML = `
+                <button class="remove-btn" onclick="removeAccSignoVital(${lesionadoId}, ${count})">×</button>
+                <h4>TOMA DE SIGNOS VITALES ${count}</h4>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>HORA:</label>
+                        <input type="time" id="acc-signo-hora-${lesionadoId}-${count}">
+                    </div>
+                    <div class="form-group">
                         <label>PA:</label>
-                        <input type="text" id="acc-les-pa-${lesionadoCount}">
+                        <input type="text" id="acc-signo-pa-${lesionadoId}-${count}">
                     </div>
                     <div class="form-group">
                         <label>FC:</label>
-                        <input type="text" id="acc-les-fc-${lesionadoCount}">
+                        <input type="text" id="acc-signo-fc-${lesionadoId}-${count}">
                     </div>
                     <div class="form-group">
                         <label>FR:</label>
-                        <input type="text" id="acc-les-fr-${lesionadoCount}">
-                    </div>
-                    <div class="form-group">
-                        <label>SAT:</label>
-                        <input type="text" id="acc-les-sat-${lesionadoCount}">
+                        <input type="text" id="acc-signo-fr-${lesionadoId}-${count}">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
+                        <label>SAT:</label>
+                        <input type="text" id="acc-signo-sat-${lesionadoId}-${count}">
+                    </div>
+                    <div class="form-group">
                         <label>EGT:</label>
-                        <input type="text" id="acc-les-egt-${lesionadoCount}">
+                        <input type="text" id="acc-signo-egt-${lesionadoId}-${count}">
                     </div>
                     <div class="form-group">
                         <label>T°:</label>
-                        <input type="text" id="acc-les-temp-${lesionadoCount}">
+                        <input type="text" id="acc-signo-temp-${lesionadoId}-${count}">
                     </div>
                     <div class="form-group">
                         <label>EVA:</label>
-                        <input type="text" id="acc-les-eva-${lesionadoCount}">
+                        <input type="text" id="acc-signo-eva-${lesionadoId}-${count}">
                     </div>
+                </div>
+                <div class="form-row">
                     <div class="form-group">
                         <label>CINCINNATI:</label>
-                        <input type="text" id="acc-les-cincinnati-${lesionadoCount}">
+                        <input type="text" id="acc-signo-cincinnati-${lesionadoId}-${count}">
                     </div>
                 </div>
             `;
             list.appendChild(div);
+        }
+
+        function removeAccSignoVital(lesionadoId, count) {
+            const item = document.getElementById(`acc-signo-${lesionadoId}-${count}`);
+            if (item) item.remove();
         }
 
         function removeLesionado(id) {
@@ -971,11 +1295,6 @@
                 const avaluo = getValue('del-avaluo');
                 const danos = getValue('del-danos');
 
-                const vp = getValue('del-vehiculo-ppu');
-                const vm = getValue('del-vehiculo-marca');
-                const vmol = getValue('del-vehiculo-modelo');
-                const vco = getValue('del-vehiculo-color');
-
                 const hechos = getValue('del-hechos');
                 const bomberos = getValue('del-bomberos');
                 const salud = getValue('del-salud');
@@ -995,6 +1314,26 @@
                     message += '\n';
                 }
 
+                const camarasMunicipales = getValue('del-camaras-municipales');
+                const camarasParticulares = getValue('del-camaras-particulares');
+                const camarasCorporales = document.querySelectorAll('input[name="del-camaras-corporal"]:checked');
+                const corporalesList = Array.from(camarasCorporales).map(cb => cb.value).join(', ');
+                const camarasTiposSeleccionados = document.querySelectorAll('input[name="del-camaras-tipo"]:checked');
+
+                if (camarasTiposSeleccionados.length > 0) {
+                    message += `*CÁMARAS:*\n`;
+                    if (document.querySelector('input[name="del-camaras-tipo"][value="MUNICIPALES"]').checked && camarasMunicipales) {
+                        message += `*MUNICIPALES:* ${camarasMunicipales}\n`;
+                    }
+                    if (document.querySelector('input[name="del-camaras-tipo"][value="PARTICULARES"]').checked && camarasParticulares) {
+                        message += `*PARTICULARES:* ${camarasParticulares}\n`;
+                    }
+                    if (document.querySelector('input[name="del-camaras-tipo"][value="CORPORALES"]').checked && corporalesList) {
+                        message += `*CORPORALES:* ${corporalesList}\n`;
+                    }
+                    message += '\n';
+                }
+
                 if (document.getElementById('del-victima-check').checked) {
                     const items = document.querySelectorAll('#del-victimas-list .dynamic-item');
                     if (items.length > 0) {
@@ -1006,13 +1345,18 @@
                             const domicilio = getValue(`del-victima-domicilio-${num}`);
                             const fono = getValue(`del-victima-fono-${num}`);
                             const correo = getValue(`del-victima-correo-${num}`);
-                            if (nombre || run || domicilio || fono || correo) {
+                            const lesionesRadio = document.querySelector(`input[name="del-victima-lesiones-${num}"]:checked`);
+                            const lesionesEstado = lesionesRadio ? lesionesRadio.value : '';
+                            const lesiones = getValue(`del-victima-lesiones-${num}`);
+                            if (nombre || run || domicilio || fono || correo || lesionesEstado || lesiones) {
                                 message += `\n*VICTIMA ${num}:*\n`;
                                 if (nombre) message += `*NOMBRE:* ${nombre}\n`;
                                 if (run) message += `*RUN:* ${run}\n`;
                                 if (domicilio) message += `*DOMICILIO:* ${domicilio}\n`;
                                 if (fono) message += `*FONO:* ${fono}\n`;
                                 if (correo) message += `*CORREO:* ${correo}\n`;
+                                if (lesionesEstado) message += `*¿PRESENTA LESIONES?:* ${lesionesEstado}\n`;
+                                if (lesiones) message += `*LESIONES:* ${lesiones}\n`;
                             }
                         });
                         message += '\n';
@@ -1023,13 +1367,53 @@
                 if (avaluo) message += `*AVALUO:*\n${avaluo}\n\n`;
                 if (danos) message += `*DAÑOS:*\n${danos}\n\n`;
 
-                if (vp || vm || vmol || vco) {
-                    message += `*DATOS DEL VEHICULO:*\n`;
-                    if (vp) message += `*PPU:* ${vp}\n`;
-                    if (vm) message += `*MARCA:* ${vm}\n`;
-                    if (vmol) message += `*MODELO:* ${vmol}\n`;
-                    if (vco) message += `*COLOR:* ${vco}\n`;
-                    message += '\n';
+                if (document.getElementById('del-vehiculo-check') && document.getElementById('del-vehiculo-check').checked) {
+                    const items = document.querySelectorAll('#del-vehiculos-list .dynamic-item');
+                    if (items.length > 0) {
+                        message += `*DATOS DEL/LOS VEHICULO(S):*\n`;
+                        items.forEach((item, index) => {
+                            const num = index + 1;
+                            const ppu = getValue(`del-vehiculo-ppu-${num}`);
+                            const marca = getValue(`del-vehiculo-marca-${num}`);
+                            const modelo = getValue(`del-vehiculo-modelo-${num}`);
+                            const color = getValue(`del-vehiculo-color-${num}`);
+                            if (ppu || marca || modelo || color) {
+                                message += `\n*VEHICULO ${num}:*\n`;
+                                if (ppu) message += `*PPU:* ${ppu}\n`;
+                                if (marca) message += `*MARCA:* ${marca}\n`;
+                                if (modelo) message += `*MODELO:* ${modelo}\n`;
+                                if (color) message += `*COLOR:* ${color}\n`;
+                            }
+                        });
+                        message += '\n';
+                    }
+                }
+
+                if (document.getElementById('del-vehiculo2-check') && document.getElementById('del-vehiculo2-check').checked) {
+                    const items = document.querySelectorAll('#del-vehiculos2-list .dynamic-item');
+                    if (items.length > 0) {
+                        message += `*DATOS DEL/LOS VEHICULO(S) SOSPECHOSOS:*\n`;
+                        items.forEach((item, index) => {
+                            const num = index + 1;
+                            const estadoRadio = document.querySelector(`input[name="del-vehiculo2-estado-${num}"]:checked`);
+                            const estado = estadoRadio ? estadoRadio.value : '';
+                            const ppu = getValue(`del-vehiculo2-ppu-${num}`);
+                            const marca = getValue(`del-vehiculo2-marca-${num}`);
+                            const modelo = getValue(`del-vehiculo2-modelo-${num}`);
+                            const color = getValue(`del-vehiculo2-color-${num}`);
+                            const observaciones = getValue(`del-vehiculo2-observaciones-${num}`);
+                            if (ppu || marca || modelo || color || estado || observaciones) {
+                                message += `\n*VEHICULO ${num}:*\n`;
+                                if (estado) message += `*ESTADO:* ${estado}\n`;
+                                if (ppu) message += `*PPU:* ${ppu}\n`;
+                                if (marca) message += `*MARCA:* ${marca}\n`;
+                                if (modelo) message += `*MODELO:* ${modelo}\n`;
+                                if (color) message += `*COLOR:* ${color}\n`;
+                                if (observaciones) message += `*OBSERVACIONES:* ${observaciones}\n`;
+                            }
+                        });
+                        message += '\n';
+                    }
                 }
 
                 if (document.getElementById('del-detenido-check').checked) {
@@ -1086,6 +1470,26 @@
                     message += '\n';
                 }
 
+                const camarasMunicipales = getValue('acc-camaras-municipales');
+                const camarasParticulares = getValue('acc-camaras-particulares');
+                const camarasCorporales = document.querySelectorAll('input[name="acc-camaras-corporal"]:checked');
+                const corporalesList = Array.from(camarasCorporales).map(cb => cb.value).join(', ');
+                const camarasTiposSeleccionados = document.querySelectorAll('input[name="acc-camaras-tipo"]:checked');
+
+                if (camarasTiposSeleccionados.length > 0) {
+                    message += `*CÁMARAS:*\n`;
+                    if (document.querySelector('input[name="acc-camaras-tipo"][value="MUNICIPALES"]').checked && camarasMunicipales) {
+                        message += `*MUNICIPALES:* ${camarasMunicipales}\n`;
+                    }
+                    if (document.querySelector('input[name="acc-camaras-tipo"][value="PARTICULARES"]').checked && camarasParticulares) {
+                        message += `*PARTICULARES:* ${camarasParticulares}\n`;
+                    }
+                    if (document.querySelector('input[name="acc-camaras-tipo"][value="CORPORALES"]').checked && corporalesList) {
+                        message += `*CORPORALES:* ${corporalesList}\n`;
+                    }
+                    message += '\n';
+                }
+
                 if (document.getElementById('acc-lesionado-check').checked) {
                     const items = document.querySelectorAll('#acc-lesionados-list .dynamic-item');
                     if (items.length > 0) {
@@ -1097,30 +1501,44 @@
                             const edad = getValue(`acc-les-edad-${num}`);
                             const domicilio = getValue(`acc-les-domicilio-${num}`);
                             const fono = getValue(`acc-les-fono-${num}`);
-                            const pa = getValue(`acc-les-pa-${num}`);
-                            const fc = getValue(`acc-les-fc-${num}`);
-                            const fr = getValue(`acc-les-fr-${num}`);
-                            const sat = getValue(`acc-les-sat-${num}`);
-                            const egt = getValue(`acc-les-egt-${num}`);
-                            const temp = getValue(`acc-les-temp-${num}`);
-                            const eva = getValue(`acc-les-eva-${num}`);
-                            const cincinnati = getValue(`acc-les-cincinnati-${num}`);
+                            const signosRadio = document.querySelector(`input[name="acc-les-signos-${num}"]:checked`);
+                            const signosEstado = signosRadio ? signosRadio.value : '';
 
-                            if (nombre || run || edad || domicilio || fono || pa || fc || fr || sat || egt || temp || eva || cincinnati) {
+                            if (nombre || run || edad || domicilio || fono || signosEstado) {
                                 message += `\n*LESIONADO ${num}:*\n`;
                                 if (nombre) message += `*NOMBRE:* ${nombre}\n`;
                                 if (run) message += `*RUN:* ${run}\n`;
                                 if (edad) message += `*EDAD:* ${edad}\n`;
                                 if (domicilio) message += `*DOMICILIO:* ${domicilio}\n`;
                                 if (fono) message += `*FONO:* ${fono}\n`;
-                                if (pa) message += `*PA:* ${pa}\n`;
-                                if (fc) message += `*FC:* ${fc}\n`;
-                                if (fr) message += `*FR:* ${fr}\n`;
-                                if (sat) message += `*SAT:* ${sat}\n`;
-                                if (egt) message += `*EGT:* ${egt}\n`;
-                                if (temp) message += `*T°:* ${temp}\n`;
-                                if (eva) message += `*EVA:* ${eva}\n`;
-                                if (cincinnati) message += `*CINCINNATI:* ${cincinnati}\n`;
+                                if (signosEstado) message += `*¿REGISTRO DE SIGNOS VITALES?:* ${signosEstado}\n`;
+
+                                const signosItems = document.querySelectorAll(`#acc-les-signos-list-${num} .dynamic-item`);
+                                signosItems.forEach((signoEl, signoIndex) => {
+                                    const snum = signoIndex + 1;
+                                    const hora = getValue(`acc-signo-hora-${num}-${snum}`);
+                                    const pa = getValue(`acc-signo-pa-${num}-${snum}`);
+                                    const fc = getValue(`acc-signo-fc-${num}-${snum}`);
+                                    const fr = getValue(`acc-signo-fr-${num}-${snum}`);
+                                    const sat = getValue(`acc-signo-sat-${num}-${snum}`);
+                                    const egt = getValue(`acc-signo-egt-${num}-${snum}`);
+                                    const temp = getValue(`acc-signo-temp-${num}-${snum}`);
+                                    const eva = getValue(`acc-signo-eva-${num}-${snum}`);
+                                    const cincinnati = getValue(`acc-signo-cincinnati-${num}-${snum}`);
+
+                                    if (hora || pa || fc || fr || sat || egt || temp || eva || cincinnati) {
+                                        message += `\n*TOMA DE SIGNOS VITALES ${snum}:*\n`;
+                                        if (hora) message += `*HORA:* ${hora}\n`;
+                                        if (pa) message += `*PA:* ${pa}\n`;
+                                        if (fc) message += `*FC:* ${fc}\n`;
+                                        if (fr) message += `*FR:* ${fr}\n`;
+                                        if (sat) message += `*SAT:* ${sat}\n`;
+                                        if (egt) message += `*EGT:* ${egt}\n`;
+                                        if (temp) message += `*T°:* ${temp}\n`;
+                                        if (eva) message += `*EVA:* ${eva}\n`;
+                                        if (cincinnati) message += `*CINCINNATI:* ${cincinnati}\n`;
+                                    }
+                                });
                             }
                         });
                         message += '\n';
@@ -1205,10 +1623,23 @@
                 document.getElementById('del-avaluo').value = '';
                 document.getElementById('del-danos').value = '';
 
-                document.getElementById('del-vehiculo-ppu').value = '';
-                document.getElementById('del-vehiculo-marca').value = '';
-                document.getElementById('del-vehiculo-modelo').value = '';
-                document.getElementById('del-vehiculo-color').value = '';
+                document.getElementById('del-vehiculo-check').checked = false;
+                document.getElementById('del-vehiculos-container').classList.add('hidden');
+                document.getElementById('del-vehiculos-list').innerHTML = '';
+                delVehiculoCount = 0;
+
+                document.getElementById('del-vehiculo2-check').checked = false;
+                document.getElementById('del-vehiculos2-container').classList.add('hidden');
+                document.getElementById('del-vehiculos2-list').innerHTML = '';
+                delVehiculo2Count = 0;
+
+                document.querySelectorAll('input[name="del-camaras-tipo"]').forEach(cb => cb.checked = false);
+                document.getElementById('del-camaras-municipales').value = '';
+                document.getElementById('del-camaras-particulares').value = '';
+                document.getElementById('del-camaras-municipales-row').classList.add('hidden');
+                document.getElementById('del-camaras-particulares-row').classList.add('hidden');
+                document.getElementById('del-camaras-corporales-row').classList.add('hidden');
+                document.getElementById('del-camaras-corporales-list').innerHTML = '';
 
                 document.getElementById('del-detenido-check').checked = false;
                 document.getElementById('del-detenidos-container').classList.add('hidden');
@@ -1227,6 +1658,14 @@
                 document.getElementById('acc-lugar').value = '';
                 document.getElementById('acc-cuadrante').value = '';
                 document.getElementById('acc-funcionarios').value = '';
+
+                document.querySelectorAll('input[name="acc-camaras-tipo"]').forEach(cb => cb.checked = false);
+                document.getElementById('acc-camaras-municipales').value = '';
+                document.getElementById('acc-camaras-particulares').value = '';
+                document.getElementById('acc-camaras-municipales-row').classList.add('hidden');
+                document.getElementById('acc-camaras-particulares-row').classList.add('hidden');
+                document.getElementById('acc-camaras-corporales-row').classList.add('hidden');
+                document.getElementById('acc-camaras-corporales-list').innerHTML = '';
 
                 document.getElementById('acc-lesionado-check').checked = false;
                 document.getElementById('acc-lesionados-container').classList.add('hidden');
@@ -1248,5 +1687,8 @@
             }
         }
     </script>
+</body>
+</html>
+
 </body>
 </html>

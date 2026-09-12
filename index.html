@@ -54,6 +54,14 @@
             background-color: #FFCDD2;
         }
 
+        .vigilancias-bg {
+            background-color: #E1BEE7;
+        }
+
+        .fiscalizacion-bg {
+            background-color: #FFF9C4;
+        }
+
         .form-section {
             background-color: white;
             padding: 20px;
@@ -71,6 +79,14 @@
 
         .accidentes-bg .form-section h2 {
             border-bottom-color: #C62828;
+        }
+
+        .vigilancias-bg .form-section h2 {
+            border-bottom-color: #6A1B9A;
+        }
+
+        .fiscalizacion-bg .form-section h2 {
+            border-bottom-color: #F9A825;
         }
 
         .form-row {
@@ -400,6 +416,8 @@
     <div class="tabs">
         <button class="tab-btn active" onclick="openTab('delitos')">DELITOS</button>
         <button class="tab-btn" onclick="openTab('accidentes')">ACCIDENTES</button>
+        <button class="tab-btn" onclick="openTab('vigilancias')">VIGILANCIAS</button>
+        <button class="tab-btn" onclick="openTab('fiscalizacion')">FISCALIZACIÓN</button>
     </div>
 
     <!-- PESTAÑA DELITOS -->
@@ -713,6 +731,127 @@
         </div>
     </div>
 
+    <!-- PESTAÑA VIGILANCIAS -->
+    <div id="vigilancias" class="tab-content vigilancias-bg">
+        <div class="form-section">
+            <h2>PROCEDIMIENTO</h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>FUNCIONARIO:</label>
+                    <input type="text" id="vig-funcionario">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>FECHA:</label>
+                    <input type="date" id="vig-fecha">
+                </div>
+                <div class="form-group">
+                    <label>HORA:</label>
+                    <input type="time" id="vig-hora">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>UBICACIÓN:</label>
+                    <input type="text" id="vig-ubicacion">
+                </div>
+                <div class="form-group">
+                    <label>CUADRANTE:</label>
+                    <input type="text" id="vig-cuadrante">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h2>NOVEDADES</h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <textarea id="vig-novedades"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="btn-container">
+            <button class="send-btn" onclick="sendWhatsApp('vigilancias')">
+                ENVIAR POR WHATSAPP
+            </button>
+            <button class="clear-btn" onclick="clearForm('vigilancias')">
+                LIMPIAR FORMULARIO
+            </button>
+        </div>
+    </div>
+
+    <!-- PESTAÑA FISCALIZACIÓN -->
+    <div id="fiscalizacion" class="tab-content fiscalizacion-bg">
+        <div class="form-section">
+            <h2>PROCEDIMIENTO</h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>FUNCIONARIO:</label>
+                    <input type="text" id="fisc-funcionario">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>FECHA:</label>
+                    <input type="date" id="fisc-fecha">
+                </div>
+                <div class="form-group">
+                    <label>HORA:</label>
+                    <input type="time" id="fisc-hora">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>UBICACIÓN:</label>
+                    <input type="text" id="fisc-ubicacion">
+                </div>
+                <div class="form-group">
+                    <label>CUADRANTE:</label>
+                    <input type="text" id="fisc-cuadrante">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h2>NOVEDADES</h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <textarea id="fisc-novedades"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h2>INFRACCIÓN</h2>
+            <div class="form-group">
+                <label>¿REGISTRA INFRACCIÓN?:</label>
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" name="fisc-infraccion" value="SI" onchange="toggleFiscInfraccion()"> SI
+                    </label>
+                    <label>
+                        <input type="radio" name="fisc-infraccion" value="NO" onchange="toggleFiscInfraccion()"> NO
+                    </label>
+                </div>
+            </div>
+            <div class="hidden" id="fisc-infracciones-container">
+                <div id="fisc-infracciones-list"></div>
+                <button class="add-btn" onclick="addFiscInfraccion()">+ AGREGAR INFRACCIÓN</button>
+            </div>
+        </div>
+
+        <div class="btn-container">
+            <button class="send-btn" onclick="sendWhatsApp('fiscalizacion')">
+                ENVIAR POR WHATSAPP
+            </button>
+            <button class="clear-btn" onclick="clearForm('fiscalizacion')">
+                LIMPIAR FORMULARIO
+            </button>
+        </div>
+    </div>
+
     <script>
         let detenidoCount = 0;
         let lesionadoCount = 0;
@@ -720,6 +859,7 @@
         let victimaCount = 0;
         let delVehiculoCount = 0;
         let delVehiculo2Count = 0;
+        let fiscInfraccionCount = 0;
 
         function openTab(tabName) {
             document.querySelectorAll('.tab-content').forEach(tab => {
@@ -1164,6 +1304,126 @@
             if (item) item.remove();
         }
 
+        function toggleFiscInfraccion() {
+            const container = document.getElementById('fisc-infracciones-container');
+            const siChecked = document.querySelector('input[name="fisc-infraccion"][value="SI"]');
+            if (siChecked && siChecked.checked) {
+                container.classList.remove('hidden');
+                if (fiscInfraccionCount === 0) addFiscInfraccion();
+            } else {
+                container.classList.add('hidden');
+            }
+        }
+
+        function addFiscInfraccion() {
+            fiscInfraccionCount++;
+            const list = document.getElementById('fisc-infracciones-list');
+            const div = document.createElement('div');
+            div.className = 'dynamic-item';
+            div.id = `fisc-infraccion-${fiscInfraccionCount}`;
+            div.innerHTML = `
+                <button class="remove-btn" onclick="removeFiscInfraccion(${fiscInfraccionCount})">×</button>
+                <h4>INFRACCIÓN ${fiscInfraccionCount}</h4>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>NRO. BOLETA:</label>
+                        <input type="text" id="fisc-inf-nro-${fiscInfraccionCount}">
+                    </div>
+                    <div class="form-group">
+                        <label>HORA:</label>
+                        <input type="time" id="fisc-inf-hora-${fiscInfraccionCount}">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>FECHA DE CITACIÓN:</label>
+                        <input type="date" id="fisc-inf-fecita-${fiscInfraccionCount}">
+                    </div>
+                    <div class="form-group">
+                        <label>MOTIVO INFRACCIÓN:</label>
+                        <input type="text" id="fisc-inf-motivo-${fiscInfraccionCount}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>TIPO:</label>
+                    <div class="radio-group">
+                        <label>
+                            <input type="radio" name="fisc-inf-tipo-${fiscInfraccionCount}" value="PERSONA NATURAL" onchange="toggleFiscTipoInfraccion(${fiscInfraccionCount})"> PERSONA NATURAL
+                        </label>
+                        <label>
+                            <input type="radio" name="fisc-inf-tipo-${fiscInfraccionCount}" value="EMPRESA" onchange="toggleFiscTipoInfraccion(${fiscInfraccionCount})"> EMPRESA
+                        </label>
+                    </div>
+                </div>
+                <div class="hidden" id="fisc-inf-natural-${fiscInfraccionCount}">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>NOMBRE:</label>
+                            <input type="text" id="fisc-inf-nombre-${fiscInfraccionCount}">
+                        </div>
+                        <div class="form-group">
+                            <label>RUN:</label>
+                            <input type="text" id="fisc-inf-run-${fiscInfraccionCount}">
+                        </div>
+                        <div class="form-group">
+                            <label>DOMICILIO:</label>
+                            <input type="text" id="fisc-inf-domicilio-${fiscInfraccionCount}">
+                        </div>
+                    </div>
+                </div>
+                <div class="hidden" id="fisc-inf-empresa-${fiscInfraccionCount}">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>RAZÓN SOCIAL:</label>
+                            <input type="text" id="fisc-inf-razon-${fiscInfraccionCount}">
+                        </div>
+                        <div class="form-group">
+                            <label>RUT:</label>
+                            <input type="text" id="fisc-inf-rut-${fiscInfraccionCount}">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>DIRECCIÓN:</label>
+                            <input type="text" id="fisc-inf-direccion-${fiscInfraccionCount}">
+                        </div>
+                        <div class="form-group">
+                            <label>NOMBRE FANTASÍA:</label>
+                            <input type="text" id="fisc-inf-fantasia-${fiscInfraccionCount}">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>TIPO PATENTE:</label>
+                            <input type="text" id="fisc-inf-tipo-patente-${fiscInfraccionCount}">
+                        </div>
+                        <div class="form-group">
+                            <label>PATENTE CLASE:</label>
+                            <input type="text" id="fisc-inf-patente-clase-${fiscInfraccionCount}">
+                        </div>
+                        <div class="form-group">
+                            <label>FOLIO(S):</label>
+                            <input type="text" id="fisc-inf-folio-${fiscInfraccionCount}">
+                        </div>
+                    </div>
+                </div>
+            `;
+            list.appendChild(div);
+        }
+
+        function removeFiscInfraccion(id) {
+            const item = document.getElementById(`fisc-infraccion-${id}`);
+            if (item) item.remove();
+        }
+
+        function toggleFiscTipoInfraccion(count) {
+            const naturalEl = document.getElementById(`fisc-inf-natural-${count}`);
+            const empresaEl = document.getElementById(`fisc-inf-empresa-${count}`);
+            const naturalChecked = document.querySelector(`input[name="fisc-inf-tipo-${count}"][value="PERSONA NATURAL"]`).checked;
+            naturalEl.classList.toggle('hidden', !naturalChecked);
+            empresaEl.classList.toggle('hidden', naturalChecked);
+        }
+
         function toggleVehiculos() {
             const container = document.getElementById('acc-vehiculos-container');
             const checkbox = document.getElementById('acc-vehiculo-check');
@@ -1596,6 +1856,91 @@
                 if (bomberos) message += `*PERSONAL BOMBEROS:* ${bomberos}\n`;
                 if (salud) message += `*PERSONAL DE SALUD:* ${salud}\n`;
                 if (policial) message += `*PERSONAL POLICIAL:* ${policial}\n`;
+
+            } else if (type === 'vigilancias') {
+                const funcionario = getValue('vig-funcionario');
+                const fecha = getValue('vig-fecha');
+                const hora = getValue('vig-hora');
+                const ubicacion = getValue('vig-ubicacion');
+                const cuadrante = getValue('vig-cuadrante');
+                const novedades = getValue('vig-novedades');
+
+                message = `*INFORME DE VIGILANCIAS*\n\n`;
+
+                if (fecha) message += `*FECHA:* ${fecha}\n`;
+                if (hora) message += `*HORA:* ${hora}\n`;
+                if (funcionario) message += `*FUNCIONARIO:* ${funcionario}\n`;
+                if (ubicacion) message += `*UBICACIÓN:* ${ubicacion}\n`;
+                if (cuadrante) message += `*CUADRANTE:* ${cuadrante}\n`;
+                if (novedades) message += `*NOVEDADES:*\n${novedades}\n`;
+
+            } else if (type === 'fiscalizacion') {
+                const funcionario = getValue('fisc-funcionario');
+                const fecha = getValue('fisc-fecha');
+                const hora = getValue('fisc-hora');
+                const ubicacion = getValue('fisc-ubicacion');
+                const cuadrante = getValue('fisc-cuadrante');
+                const novedades = getValue('fisc-novedades');
+
+                message = `*INFORME DE FISCALIZACIÓN*\n\n`;
+
+                if (fecha) message += `*FECHA:* ${fecha}\n`;
+                if (hora) message += `*HORA:* ${hora}\n`;
+                if (funcionario) message += `*FUNCIONARIO:* ${funcionario}\n`;
+                if (ubicacion) message += `*UBICACIÓN:* ${ubicacion}\n`;
+                if (cuadrante) message += `*CUADRANTE:* ${cuadrante}\n`;
+                if (novedades) message += `*NOVEDADES:*\n${novedades}\n`;
+
+                const infraccionSi = document.querySelector('input[name="fisc-infraccion"][value="SI"]');
+                if (infraccionSi && infraccionSi.checked) {
+                    const items = document.querySelectorAll('#fisc-infracciones-list .dynamic-item');
+                    if (items.length > 0) {
+                        message += `\n*INFRACCIÓN(ES):*\n`;
+                        items.forEach((item, index) => {
+                            const num = index + 1;
+                            const nro = getValue(`fisc-inf-nro-${num}`);
+                            const horaInf = getValue(`fisc-inf-hora-${num}`);
+                            const fecita = getValue(`fisc-inf-fecita-${num}`);
+                            const motivo = getValue(`fisc-inf-motivo-${num}`);
+                            const tipoRadio = document.querySelector(`input[name="fisc-inf-tipo-${num}"]:checked`);
+                            const tipo = tipoRadio ? tipoRadio.value : '';
+
+                            const nombre = getValue(`fisc-inf-nombre-${num}`);
+                            const run = getValue(`fisc-inf-run-${num}`);
+                            const domicilio = getValue(`fisc-inf-domicilio-${num}`);
+
+                            const razon = getValue(`fisc-inf-razon-${num}`);
+                            const rut = getValue(`fisc-inf-rut-${num}`);
+                            const direccion = getValue(`fisc-inf-direccion-${num}`);
+                            const fantasia = getValue(`fisc-inf-fantasia-${num}`);
+                            const tipoPatente = getValue(`fisc-inf-tipo-patente-${num}`);
+                            const patenteClase = getValue(`fisc-inf-patente-clase-${num}`);
+                            const folio = getValue(`fisc-inf-folio-${num}`);
+
+                            if (nro || horaInf || fecita || motivo || tipo || nombre || run || domicilio || razon || rut || direccion || fantasia || tipoPatente || patenteClase || folio) {
+                                message += `\n*INFRACCIÓN ${num}:*\n`;
+                                if (nro) message += `*NRO. BOLETA:* ${nro}\n`;
+                                if (horaInf) message += `*HORA:* ${horaInf}\n`;
+                                if (fecita) message += `*FECHA DE CITACIÓN:* ${fecita}\n`;
+                                if (motivo) message += `*MOTIVO INFRACCIÓN:* ${motivo}\n`;
+                                if (tipo) message += `*TIPO:* ${tipo}\n`;
+                                if (tipo === 'PERSONA NATURAL') {
+                                    if (nombre) message += `*NOMBRE:* ${nombre}\n`;
+                                    if (run) message += `*RUN:* ${run}\n`;
+                                    if (domicilio) message += `*DOMICILIO:* ${domicilio}\n`;
+                                } else if (tipo === 'EMPRESA') {
+                                    if (razon) message += `*RAZÓN SOCIAL:* ${razon}\n`;
+                                    if (rut) message += `*RUT:* ${rut}\n`;
+                                    if (direccion) message += `*DIRECCIÓN:* ${direccion}\n`;
+                                    if (fantasia) message += `*NOMBRE FANTASÍA:* ${fantasia}\n`;
+                                    if (tipoPatente) message += `*TIPO PATENTE:* ${tipoPatente}\n`;
+                                    if (patenteClase) message += `*PATENTE CLASE:* ${patenteClase}\n`;
+                                    if (folio) message += `*FOLIO(S):* ${folio}\n`;
+                                }
+                            }
+                        });
+                    }
+                }
             }
 
             const encodedMessage = encodeURIComponent(message);
@@ -1684,9 +2029,40 @@
                 document.getElementById('acc-bomberos').value = '';
                 document.getElementById('acc-salud').value = '';
                 document.getElementById('acc-policial').value = '';
+
+            } else if (type === 'vigilancias') {
+                document.getElementById('vig-funcionario').value = '';
+                document.getElementById('vig-ubicacion').value = '';
+                document.getElementById('vig-cuadrante').value = '';
+                document.getElementById('vig-novedades').value = '';
+                setFechaAuto();
+
+            } else if (type === 'fiscalizacion') {
+                document.getElementById('fisc-funcionario').value = '';
+                document.getElementById('fisc-ubicacion').value = '';
+                document.getElementById('fisc-cuadrante').value = '';
+                document.getElementById('fisc-novedades').value = '';
+                const infraccionSi = document.querySelector('input[name="fisc-infraccion"][value="SI"]');
+                const infraccionNo = document.querySelector('input[name="fisc-infraccion"][value="NO"]');
+                if (infraccionSi) infraccionSi.checked = false;
+                if (infraccionNo) infraccionNo.checked = false;
+                document.getElementById('fisc-infracciones-container').classList.add('hidden');
+                document.getElementById('fisc-infracciones-list').innerHTML = '';
+                fiscInfraccionCount = 0;
+                setFechaAuto();
             }
         }
+
+        function setFechaAuto() {
+            const ahora = new Date();
+            const fecha = ahora.getFullYear() + '-' + String(ahora.getMonth() + 1).padStart(2, '0') + '-' + String(ahora.getDate()).padStart(2, '0');
+            const vigFecha = document.getElementById('vig-fecha');
+            const fiscFecha = document.getElementById('fisc-fecha');
+            if (vigFecha) vigFecha.value = fecha;
+            if (fiscFecha) fiscFecha.value = fecha;
+        }
+
+        setFechaAuto();
     </script>
 </body>
 </html>
-

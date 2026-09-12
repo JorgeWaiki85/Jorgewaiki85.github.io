@@ -54,6 +54,10 @@
             background-color: #FFCDD2;
         }
 
+        .vigilancias-bg {
+            background-color: #E1BEE7;
+        }
+
         .form-section {
             background-color: white;
             padding: 20px;
@@ -71,6 +75,10 @@
 
         .accidentes-bg .form-section h2 {
             border-bottom-color: #C62828;
+        }
+
+        .vigilancias-bg .form-section h2 {
+            border-bottom-color: #6A1B9A;
         }
 
         .form-row {
@@ -400,6 +408,7 @@
     <div class="tabs">
         <button class="tab-btn active" onclick="openTab('delitos')">DELITOS</button>
         <button class="tab-btn" onclick="openTab('accidentes')">ACCIDENTES</button>
+        <button class="tab-btn" onclick="openTab('vigilancias')">VIGILANCIAS</button>
     </div>
 
     <!-- PESTAÑA DELITOS -->
@@ -708,6 +717,57 @@
                 ENVIAR POR WHATSAPP
             </button>
             <button class="clear-btn" onclick="clearForm('accidentes')">
+                LIMPIAR FORMULARIO
+            </button>
+        </div>
+    </div>
+
+    <!-- PESTAÑA VIGILANCIAS -->
+    <div id="vigilancias" class="tab-content vigilancias-bg">
+        <div class="form-section">
+            <h2>PROCEDIMIENTO</h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>FUNCIONARIO:</label>
+                    <input type="text" id="vig-funcionario">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>FECHA:</label>
+                    <input type="date" id="vig-fecha">
+                </div>
+                <div class="form-group">
+                    <label>HORA:</label>
+                    <input type="time" id="vig-hora">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>UBICACIÓN:</label>
+                    <input type="text" id="vig-ubicacion">
+                </div>
+                <div class="form-group">
+                    <label>CUADRANTE:</label>
+                    <input type="text" id="vig-cuadrante">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h2>NOVEDADES</h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <textarea id="vig-novedades"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="btn-container">
+            <button class="send-btn" onclick="sendWhatsApp('vigilancias')">
+                ENVIAR POR WHATSAPP
+            </button>
+            <button class="clear-btn" onclick="clearForm('vigilancias')">
                 LIMPIAR FORMULARIO
             </button>
         </div>
@@ -1596,6 +1656,23 @@
                 if (bomberos) message += `*PERSONAL BOMBEROS:* ${bomberos}\n`;
                 if (salud) message += `*PERSONAL DE SALUD:* ${salud}\n`;
                 if (policial) message += `*PERSONAL POLICIAL:* ${policial}\n`;
+
+            } else if (type === 'vigilancias') {
+                const funcionario = getValue('vig-funcionario');
+                const fecha = getValue('vig-fecha');
+                const hora = getValue('vig-hora');
+                const ubicacion = getValue('vig-ubicacion');
+                const cuadrante = getValue('vig-cuadrante');
+                const novedades = getValue('vig-novedades');
+
+                message = `*INFORME DE VIGILANCIAS*\n\n`;
+
+                if (fecha) message += `*FECHA:* ${fecha}\n`;
+                if (hora) message += `*HORA:* ${hora}\n`;
+                if (funcionario) message += `*FUNCIONARIO:* ${funcionario}\n`;
+                if (ubicacion) message += `*UBICACIÓN:* ${ubicacion}\n`;
+                if (cuadrante) message += `*CUADRANTE:* ${cuadrante}\n`;
+                if (novedades) message += `*NOVEDADES:*\n${novedades}\n`;
             }
 
             const encodedMessage = encodeURIComponent(message);
@@ -1684,11 +1761,25 @@
                 document.getElementById('acc-bomberos').value = '';
                 document.getElementById('acc-salud').value = '';
                 document.getElementById('acc-policial').value = '';
+
+            } else if (type === 'vigilancias') {
+                document.getElementById('vig-funcionario').value = '';
+                document.getElementById('vig-ubicacion').value = '';
+                document.getElementById('vig-cuadrante').value = '';
+                document.getElementById('vig-novedades').value = '';
+                setVigilanciaDateTime();
             }
         }
-    </script>
-</body>
-</html>
 
+        function setVigilanciaDateTime() {
+            const ahora = new Date();
+            const fecha = ahora.getFullYear() + '-' + String(ahora.getMonth() + 1).padStart(2, '0') + '-' + String(ahora.getDate()).padStart(2, '0');
+            const hora = String(ahora.getHours()).padStart(2, '0') + ':' + String(ahora.getMinutes()).padStart(2, '0');
+            document.getElementById('vig-fecha').value = fecha;
+            document.getElementById('vig-hora').value = hora;
+        }
+
+        setVigilanciaDateTime();
+    </script>
 </body>
 </html>
